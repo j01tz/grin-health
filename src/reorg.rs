@@ -60,7 +60,6 @@ impl ReorgScore {
             let start = log.find("depth: ").unwrap() + 7;
             let end = log.len() - 1;
             let depth = &log[start..end].parse::<u8>().unwrap();
-            println!("depth:{}", depth);
             // Compare it to deepest reorg- if bigger, update deepest reorg value
             if depth > &deepest_reorg {
                 deepest_reorg = *depth;

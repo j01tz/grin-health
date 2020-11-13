@@ -30,11 +30,11 @@ impl HealthData {
 }
 
 pub struct HealthScore {
-    overall_score: u8,
-    nicehash_score: u8,
-    reorg_score: u8,
-    last_checked: DateTime<Local>,
-    data: HealthData,
+    pub overall_score: u8,
+    pub nicehash_score: u8,
+    pub reorg_score: u8,
+    pub last_checked: DateTime<Local>,
+    pub data: HealthData,
 }
 
 impl HealthScore {
