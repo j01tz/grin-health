@@ -34,6 +34,7 @@ pub fn nicehash_score(
     let profitability_ratio: f64 = current_price / earning_per_graph;
     let price_ratio: f64 = current_price / average_price;
     let speed_ratio: f64 = current_speed / average_speed;
+    let network_ratio: f64 = current_speed / network_speed;
 
     // Begin scoring alogirthm:
     // Point lost if current market price is 50% or more of earning price
@@ -53,18 +54,24 @@ pub fn nicehash_score(
     }
 
     // Point lost if current nicehash graphrate is 50% or more of GRIN network
-    if speed_ratio >= 0.5 {
+    if network_ratio >= 0.5 {
         score -= 1;
     }
 
     // Anoather point lost of the current nicehash graphrate is 75% or more of GRIN network
-    if speed_ratio >= 0.75 {
+    if network_ratio >= 0.75 {
+        score -= 1;
+    }
+
+    // See if the current nicehash speed has doubled from average
+    // If there are still points we can take away, remove 1 from score
+    if score > 1 && speed_ratio >= 1.5 {
         score -= 1;
     }
 
     // Even if there is no major changes on speed and price, if nicehash is responsible
     // for 50% or more of the network graphrate, the network is still fairly unhealthy.
-    if score == 4 && speed_ratio >= 0.5 {
+    if score == 4 && network_ratio >= 0.5 {
         score -= 1;
     }
 
