@@ -18,6 +18,7 @@ pub struct NicehashScore {
     pub average_price: f64,
     pub current_speed: f64,
     pub average_speed: f64,
+    pub network_speed: f64,
     pub last_checked: DateTime<Local>,
 }
 
@@ -30,6 +31,7 @@ impl NicehashScore {
             average_price: 0.0,
             current_speed: 0.0,
             average_speed: 0.0,
+            network_speed: 0.0,
             last_checked: Local::now(),
         };
         Ok(score)
@@ -49,6 +51,7 @@ impl NicehashScore {
 
         // Get current network speed
         let network_speed: f64 = parse_net_speed(call(NETSPEED)?)?;
+        self.network_speed = network_speed;
 
         // Get current BTC/GRIN ratio
         let btc_grin_ratio: f64 = parse_btc_grin(call(BTCGRIN)?)?;
