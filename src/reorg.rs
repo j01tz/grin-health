@@ -5,6 +5,8 @@ use std::fs::File;
 use std::io::{prelude::*, BufReader};
 
 const GRINLOGFILE: &str = ".grin/main/grin-server.log";
+
+#[derive(Debug)]
 pub struct ReorgScore {
     pub overall_score: u8,
     pub count: u8,

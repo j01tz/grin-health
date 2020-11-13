@@ -14,6 +14,7 @@ pub mod algorithms;
 mod errors;
 mod api;
 
+#[derive(Debug)]
 pub struct HealthData {
     nicehash_data: NicehashScore,
     reorg_data: ReorgScore,
@@ -29,6 +30,7 @@ impl HealthData {
     }
 }
 
+#[derive(Debug)]
 pub struct HealthScore {
     pub overall_score: u8,
     pub nicehash_score: u8,

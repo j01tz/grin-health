@@ -11,6 +11,7 @@ const NETSPEED: &str = "https://api.grinmint.com/v2/networkStats";
 const BTCGRIN: &str = "https://api.coingecko.com/api/v3/simple/price?ids=grin&vs_currencies=btc";
 
 // Contains relevant Nicehash score data to calculate overall health score
+#[derive(Debug)]
 pub struct NicehashScore {
     pub overall_score: u8,
     pub current_price: f64,
