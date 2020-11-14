@@ -31,7 +31,7 @@ impl HealthData {
     }
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct HealthScore {
     pub overall_score: u8,
     pub nicehash_score: u8,
