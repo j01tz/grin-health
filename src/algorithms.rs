@@ -58,8 +58,13 @@ pub fn nicehash_score(
         score -= 1;
     }
 
-    // Anoather point lost of the current nicehash graphrate is 75% or more of GRIN network
+    // Another point lost of the current nicehash graphrate is 75% or more of GRIN network
     if network_ratio >= 0.75 {
+        score -= 1;
+    }
+
+    // If we aren't already at score 1, remove a point if NH hash >90% network graphrate
+    if score > 1 && network_ratio >= 0.9 {
         score -= 1;
     }
 
