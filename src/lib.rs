@@ -1,4 +1,4 @@
-use chrono::{DateTime, Local};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
@@ -36,7 +36,7 @@ pub struct HealthScore {
     pub overall_score: u8,
     pub nicehash_score: u8,
     pub reorg_score: u8,
-    pub last_checked: DateTime<Local>,
+    pub last_checked: DateTime<Utc>,
     pub data: HealthData,
 }
 
@@ -46,7 +46,7 @@ impl HealthScore {
             overall_score: 0,
             nicehash_score: 0,
             reorg_score: 0,
-            last_checked: Local::now(),
+            last_checked: Utc::now(),
             data: HealthData::new()?,
         };
         Ok(score)
@@ -67,7 +67,7 @@ impl HealthScore {
         self.overall_score = health_score(nicehash.overall_score, reorg.overall_score)?;
 
         // Update with current timestamp
-        self.last_checked = Local::now();
+        self.last_checked = Utc::now();
 
         // Include granular nicehash and reorg data points
         self.data.nicehash_data = nicehash;

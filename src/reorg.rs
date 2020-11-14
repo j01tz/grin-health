@@ -1,6 +1,6 @@
 use crate::algorithms::*;
 use crate::errors::*;
-use chrono::{DateTime, Duration, Local, prelude::*};
+use chrono::{DateTime, Duration, Local, Utc, prelude::*};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use serde::{Deserialize, Serialize};
@@ -12,7 +12,7 @@ pub struct ReorgScore {
     pub overall_score: u8,
     pub count: u8,
     pub deepest: u8,
-    pub last_checked: DateTime<Local>,
+    pub last_checked: DateTime<Utc>,
 }
 
 impl ReorgScore {
@@ -21,7 +21,7 @@ impl ReorgScore {
             overall_score: 0,
             count: 0,
             deepest: 0,
-            last_checked: Local::now(),
+            last_checked: Utc::now(),
         };
         Ok(score)
     }
@@ -74,7 +74,7 @@ impl ReorgScore {
         self.overall_score = reorg_score(self.count, self.deepest)?;
 
         // Update with current timestamp
-        self.last_checked = Local::now();
+        self.last_checked = Utc::now();
 
         Ok(())
     }

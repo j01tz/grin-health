@@ -1,4 +1,4 @@
-use chrono::{DateTime, Local};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use crate::algorithms::*;
@@ -20,7 +20,7 @@ pub struct NicehashScore {
     pub current_speed: f64,
     pub average_speed: f64,
     pub network_speed: f64,
-    pub last_checked: DateTime<Local>,
+    pub last_checked: DateTime<Utc>,
 }
 
 impl NicehashScore {
@@ -33,7 +33,7 @@ impl NicehashScore {
             current_speed: 0.0,
             average_speed: 0.0,
             network_speed: 0.0,
-            last_checked: Local::now(),
+            last_checked: Utc::now(),
         };
         Ok(score)
     }
@@ -68,7 +68,7 @@ impl NicehashScore {
         )?;
 
         // Update with current timestamp
-        self.last_checked = Local::now();
+        self.last_checked = Utc::now();
 
         Ok(())
     }
