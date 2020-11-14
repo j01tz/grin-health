@@ -1,4 +1,5 @@
 use chrono::{DateTime, Local};
+use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
 use crate::nicehash::*;
@@ -14,7 +15,7 @@ pub mod algorithms;
 mod errors;
 mod api;
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct HealthData {
     nicehash_data: NicehashScore,
     reorg_data: ReorgScore,

@@ -3,10 +3,11 @@ use crate::errors::*;
 use chrono::{DateTime, Duration, Local, prelude::*};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
+use serde::{Deserialize, Serialize};
 
 const GRINLOGFILE: &str = ".grin/main/grin-server.log";
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ReorgScore {
     pub overall_score: u8,
     pub count: u8,
