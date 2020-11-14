@@ -2,13 +2,22 @@ use crate::errors::*;
 
 // Calculates an overall health score based on nicehash and reorg data
 pub fn health_score(nicehash_score: u8, reorg_score: u8) -> Result<u8> {
-    let score: u8;
+    let mut score: u8;
     if reorg_score == 0 && nicehash_score == 0 {
         score = 0;
         return Ok(score);
     };
 
+    // Take an average of nicehash and reorg scores
     score = (nicehash_score + reorg_score) / 2;
+
+    // If either score is 1, check if overall score is 3 or higher
+    // If so, remove another point to reflect risk
+    if nicehash_score == 1 || reorg_score == 1 {
+        if score >= 3 {
+            score -= 1;
+        }
+    }
 
     Ok(score)
 }
