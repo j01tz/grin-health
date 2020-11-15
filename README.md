@@ -11,11 +11,11 @@ This library uses data from the Nicehash API and from local Grin node logs to de
 ### Requirements
 
 - Grin node running locally and producing logs
-    - Adjust log path with `GRINLOGFILE` in reorg.rs
+    - Adjust log path with `GRINLOGFILE` in `reorg.rs`
 
 - Ability to make external API calls
 
-### Quickstart:
+### Quickstart
 
 ```
 grin-health = { git = "https://github.com/j01tz/grin-health", branch = "main" }
@@ -37,6 +37,7 @@ Scoring is rated 0 to 5, with 5 being the healthiest network and 0 being a netwo
 
 The suggestions below are just suggestions- you must use your own judgment when determining confirmation times for your own use case.
 
+```
 Suggested confirmation times for scores:
 0 = Do not accept payments
 1 = 10080 confirmations 
@@ -44,6 +45,7 @@ Suggested confirmation times for scores:
 3 = 180 confirmations
 4 = 60 confirmations
 5 = 30 confirmations
+```
 
 ## Algorithms
 
@@ -57,7 +59,7 @@ This algorithm consumes the following data: current rental price/graph/day, aver
 
 Based on this data, the scoring algorithm attempts to generate a 0 to 5 score to accurately reflect risk posed to the Grin network from current Nicehash dynamics.
 
-## Reorg
+### Reorg
 
 This algorithm consumes the following data: number of reorganizations in the last day and highest depth of reorganization in the last day.
 
@@ -65,6 +67,6 @@ A high volume or depth of block reorganizations on the network can indicate an a
 
 A live Grin node is required to run to produce the logs to be consumed for reorganization data. In the future this data may be available via external API.
 
-## Overall Health
+### Overall Health
 
 This algorithm consumes the nicehash and reorg scores to generate a 0 to 5 score to attempt to accurately reflect the overall network health for Grin in real-time.
