@@ -32,10 +32,19 @@ impl ReorgScore {
         let reader = BufReader::new(file);
 
         // Get current date and previous date to check for reorgs in last 24 hours
+        // This is hacky because chrono doesn't add a zero for days < 10
+        // TODO: clean this up to parse the log file timestamps as proper DateTime
+        let today: String;
+        let yesterday: String;
         let now = Local::now();
-        let today = format!("{}{}{}", now.year(), now.month(), now.day());
         let previous = now - Duration::days(1);
-        let yesterday = format!("{}{}{}", previous.year(), previous.month(), previous.day());
+        if now.day() < 10 {
+            today = format!("{}{}0{}", now.year(), now.month(), now.day());
+            yesterday = format!("{}{}0{}", previous.year(), previous.month(), previous.day());
+        } else {
+            today = format!("{}{}{}", now.year(), now.month(), now.day());
+            yesterday = format!("{}{}{}", previous.year(), previous.month(), previous.day());
+        }
 
         // Collect only recent logs from last 24 hours to look for reorgs
         let mut recent_logs = Vec::new();
