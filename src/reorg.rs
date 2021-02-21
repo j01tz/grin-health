@@ -1,6 +1,6 @@
 use crate::algorithms::*;
 use crate::errors::*;
-use chrono::{DateTime, Duration, Local, Utc, prelude::*};
+use chrono::{DateTime, NaiveDate, Duration, Local, Utc, prelude::*};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use serde::{Deserialize, Serialize};
@@ -31,28 +31,25 @@ impl ReorgScore {
         let file = File::open(GRINLOGFILE)?;
         let reader = BufReader::new(file);
 
-        // Get current date and previous date to check for reorgs in last 24 hours
-        // This is hacky because chrono doesn't add a zero for days < 10
-        // TODO: clean this up to parse the log file timestamps as proper DateTime
-        let today: String;
-        let yesterday: String;
-        let now = Local::now();
-        let previous = now - Duration::days(1);
-        if now.day() < 10 {
-            today = format!("{}{}0{}", now.year(), now.month(), now.day());
-            yesterday = format!("{}{}0{}", previous.year(), previous.month(), previous.day());
-        } else {
-            today = format!("{}{}{}", now.year(), now.month(), now.day());
-            yesterday = format!("{}{}{}", previous.year(), previous.month(), previous.day());
-        }
+        // Get current date and previous date to check for reorgs in last day
+        // TODO: continue to clean this up and write tests
+        let yesterday: Date<Local> = Local::today() - Duration::days(1);
+        let compare_yesterday = NaiveDate::from_ymd(yesterday.year(), yesterday.month(), yesterday.day());
 
-        // Collect only recent logs from last 24 hours to look for reorgs
-        let mut recent_logs = Vec::new();
+        // Collect only recent logs from last day to look for reorgs
+        let mut recent_logs: Vec<String> = Vec::new();
         for line in reader.lines() {
             let buff = line?;
-            if buff.contains(&today) | buff.contains(&yesterday) {
-                recent_logs.push(buff);
-            }
+            let log_date = &buff[0..7];
+            let format_date = NaiveDate::parse_from_str(log_date, "%Y%m%d");
+            if let Ok(date) = format_date {
+                if date >= compare_yesterday {
+                    recent_logs.push(buff);
+                };
+            } else {
+                print!("Warning: could not parse date from reorg log: {}", log_date);
+                continue
+            };
         }
 
         // Collect all recent reorg logs and count the total reorgs
